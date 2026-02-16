@@ -6,33 +6,38 @@ const { SECRET_KEY } = require('../config'); // Your secret key
 
  // Helper method to generate a JWT token
 function generateToken(user) {
-    return jwt.sign({ id: user.id, username: user.username }, SECRET_KEY, { expiresIn: '1h' });
+    return jwt.sign({ id: user.id, username: user.username, role: user.role || 'USER' }, SECRET_KEY, { expiresIn: '1h' });
 }
 
 class User {
     static register(user, callback) {
-        const { username, password } = user;
+        const { username, email, password } = user;
       
+        if (!email) {
+          return callback(new Error('Email is required'));
+        }
+
         bcrypt.hash(password, 10, (err, hashedPassword) => {
           if (err) {
             return callback(err);
           }
       
           // Use an arrow function to ensure the correct 'this' context
-          db.run('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword], function (err) {
+          db.run('INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)', 
+            [username, email, hashedPassword, 'USER'], function (err) {
             if (err) {
               return callback(err);
             }
       
             // Generate and return the JWT token after registration
-            const token = generateToken({ id: this.lastID, username });
-            callback(null, { id: this.lastID, username, token });
+            const token = generateToken({ id: this.lastID, username, role: 'USER' });
+            callback(null, { id: this.lastID, username, email, role: 'USER', token });
           });
         });
       }
 
       static login(username, password, callback) {
-        db.get('SELECT * FROM users WHERE username = ?', [username], (err, user) => {
+        db.get('SELECT * FROM users WHERE username = ? OR email = ?', [username, username], (err, user) => {
           if (err) {
             return callback(err);
           }
@@ -50,14 +55,14 @@ class User {
             }
     
             // Passwords match, generate and return the JWT token
-            const token = generateToken(user);
-            callback(null, { id: user.id, username, token });
+            const token = generateToken({ id: user.id, username: user.username, role: user.role || 'USER' });
+            callback(null, { id: user.id, username: user.username, email: user.email, role: user.role || 'USER', token });
           });
         });
       }
 
     static getById(id, callback) {
-        db.get('SELECT id, username FROM users WHERE id = ?', [id], callback);
+        db.get('SELECT id, username, email, role FROM users WHERE id = ?', [id], callback);
     }
 
     // Helper method to verify and decode a JWT token

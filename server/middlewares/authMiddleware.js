@@ -3,7 +3,10 @@ const jwt = require('jsonwebtoken');
 const { SECRET_KEY } = require('../config'); // Your secret key
 
 function authenticateToken(req, res, next) {
-  const token = req.headers['authorization'];
+  let token = req.headers['authorization'];
+  if (token && token.startsWith('Bearer ')) {
+    token = token.slice(7);
+  }
 
   if (!token) {
     return res.status(401).json({ error: 'Unauthorized: Missing token' });

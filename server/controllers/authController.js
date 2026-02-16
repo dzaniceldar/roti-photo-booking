@@ -27,6 +27,18 @@ const authController = {
       res.json({ user });
     });
   },
+
+  getMe: (req, res) => {
+    User.getById(req.user.id, (err, user) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error fetching user.' });
+      }
+      if (!user) {
+        return res.status(404).json({ error: 'User not found.' });
+      }
+      res.json(user);
+    });
+  },
 };
 
 module.exports = authController;

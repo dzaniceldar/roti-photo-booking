@@ -1,3 +1,50 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  min-height: 100vh;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: linear-gradient(135deg, #0f1419 0%, #1a2332 50%, #0f1419 100%) !important;
+  color: #e5e7eb !important;
+}
+
+#root {
+  background: linear-gradient(135deg, #0f1419 0%, #1a2332 50%, #0f1419 100%);
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 rounded-xl font-semibold bg-accent text-white transition-all duration-300 hover:bg-accent-hover hover:shadow-glow active:scale-[0.98];
+  }
+  .btn-secondary {
+    @apply px-6 py-3 rounded-xl font-semibold border-2 border-accent text-accent transition-all duration-300 hover:bg-accent/10 hover:border-accent-hover active:scale-[0.98];
+  }
+  .btn-danger {
+    @apply px-4 py-2 rounded-lg font-medium bg-red-600/20 text-red-400 border border-red-500/50 transition-all duration-200 hover:bg-red-600/30 active:scale-[0.98];
+  }
+  .btn-ghost {
+    @apply px-4 py-2 rounded-lg font-medium text-gray-400 transition-all duration-200 hover:bg-white/5 hover:text-white;
+  }
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/30 transition-all duration-200;
+  }
+  .card {
+    @apply rounded-2xl bg-canvas-light/80 border border-white/5 shadow-card backdrop-blur-sm transition-all duration-300 hover:shadow-card-hover hover:border-white/10;
+  }
+  .card-elevated {
+    @apply rounded-2xl bg-canvas-lighter/90 border border-white/10 shadow-card backdrop-blur-md;
+  }
+}
+
+/* Fallback - osiguraj vidljivost čak i ako Tailwind ne generiše sve klase */
+#root, #root * { box-sizing: border-box; }
+#root header a, #root footer a { color: #d4a853 !important; }
+#root header a:hover, #root footer a:hover { color: #e8c16a !important; }
+/* Žuta tipka (Link s btn-primary) – tekst mora biti bijel, inače se nadjača #root a */
+#root a.btn-primary { color: #ffffff !important; }
+#root a.btn-primary:hover { color: #ffffff !important; }

@@ -3,43 +3,41 @@ import Footer from './components/footer/Footer';
 import RoutesList from './routes/routesList';
 
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 function App() {
-  const [auth, setAuth] = useState();
-  const navigate = useNavigate();
+  const [auth, setAuth] = useState(false);
   useEffect(() => {
     // Function to fetch data
     const verifyToken = async () => {
       const authToken = Cookies.get('authData');
-      if(authToken){
+      if (authToken) {
         try {
-          const response = await fetch('http://localhost:3001/api/auth/verify-token', {
+          const response = await fetch('/api/auth/verify-token', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `${authToken}`,
-            },
+            headers: { 'Content-Type': 'application/json', 'Authorization': authToken },
           });
+          if (!response.ok) {
+            setAuth(false);
+            return;
+          }
           const data = await response.json();
-          setAuth(data.token); // Set auth to token
-        } catch (error) {
-          setAuth(false); // Set auth to false if there is an error or the token is invalid
-          navigate("/login");
+          setAuth(data.user);
+        } catch {
+          setAuth(false);
         }
-      }else{
-        console.log("Empty token")
-        setAuth(false); 
+      } else {
+        setAuth(false);
       }
     };
-
-    // Call the verify token function
     verifyToken();
-  }, [navigate]); // Empty dependency array means this effect runs once after the initial render
+  }, []);
   
   return (
-    <div className="flex flex-col min-h-screen">
+    <div 
+      className="flex flex-col min-h-screen bg-[#0f1419] text-gray-100"
+      style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: '#0f1419', color: '#e5e7eb' }}
+    >
         <Header auth={auth} setAuth={setAuth} />
         <RoutesList auth={auth} setAuth={setAuth} />
         <Footer />

@@ -2,22 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <title>React App</title>
+    <meta name="description" content="RotiPhoto" />
+    <title>RotiPhoto</title>
+    <style>
+      html, body, #root { min-height: 100vh; margin: 0; color: #e5e7eb; }
+      body { background: linear-gradient(135deg, #0f1419 0%, #1a2332 50%, #0f1419 100%); }
+      #root header { background: rgba(15,20,25,0.9); border-bottom: 1px solid rgba(255,255,255,0.1); }
+      #root a { color: #d4a853; text-decoration: none; }
+      #root a:hover { color: #e8c16a; }
+      #root input, #root button { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #e5e7eb; padding: 12px 16px; border-radius: 12px; }
+      #root button[type=submit] { background: #d4a853; color: #0f1419; font-weight: 600; cursor: pointer; }
+      #root footer { border-top: 1px solid rgba(255,255,255,0.1); }
+    </style>
   </head>
   <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
   </body>
 </html>
